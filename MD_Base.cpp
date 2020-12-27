@@ -24,14 +24,29 @@ namespace CAN_Device_Lib{
 
     void MD_Base::Update(){
       dev.Write(DevID,TxBuf.buf,8);
+
+      for(int i = 0;i < 4;i++){
+        uint8_t mask_l = (1 << (7 - (i * 2)));
+        uint8_t mask_d = (1 << (6 - (i * 2)));
+        LimitSW[i] = (status & mask_l) >> (7 - (i * 2));
+        DistanceFlag[i] = (status & mask_d) >> (6 - (i * 2));
+      }
     }
 
-    uint16_t MD_Base::ReadID(){
-        return (1 << 10) |+ DevID;
+    uint16_t MD_Base::ReadID()const{
+      return (1 << 10) |+ DevID;
     }
     
     void MD_Base::RxHandler(uint8_t data){
-        status = data;
+      status = data;
+    }
+
+    const uint8_t& MD_Base::ReadLimitSW(uint8_t num)const{
+      return LimitSW[num];
+    }
+
+    const uint8_t& MD_Base::ReadDistanceFlag(uint8_t num)const{
+      return DistanceFlag[num];
     }
   }
 
