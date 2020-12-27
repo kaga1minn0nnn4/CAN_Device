@@ -9,7 +9,8 @@ namespace CAN_Device_Lib{
     enum class MD_Mode_t{
       DutyMode = 0,
       SpeedMode,
-      DistanceMode
+      DistanceMode,
+      ResetMode
     };
 
     union MD_Base_Data_t{
