@@ -22,10 +22,13 @@ namespace CAN_Device_Lib{
       CAN_Device& dev;
       uint16_t DevID;
       MD_Base_Data_t TxBuf;
+      uint8_t status;
     public:
       MD_Base(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},TxBuf{}{}
       void Move(uint8_t num,MD_Mode_t cmd,int16_t value);
       void Update();
+      uint16_t ReadID();
+      void RxHandler(uint8_t data);
     };
 
   }

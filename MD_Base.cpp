@@ -25,7 +25,14 @@ namespace CAN_Device_Lib{
     void MD_Base::Update(){
       dev.Write(DevID,TxBuf.buf,8);
     }
-  
+
+    uint16_t MD_Base::ReadID(){
+        return (1 << 10) |+ DevID;
+    }
+    
+    void MD_Base::RxHandler(uint8_t data){
+        status = data;
+    }
   }
 
 }
