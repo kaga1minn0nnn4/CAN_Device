@@ -3,5 +3,6 @@
 
 #include "Device.hpp"
 #include "ytRsSolenoidDriver.hpp"
+#include "MD_Base.hpp"
 
 #endif
