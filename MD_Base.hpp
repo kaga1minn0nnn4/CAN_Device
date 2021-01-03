@@ -1,4 +1,6 @@
 #ifndef MD_BASE_H
+#define MD_BASE_H
+
 #include "Device.hpp"
 
 

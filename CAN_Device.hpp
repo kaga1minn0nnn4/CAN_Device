@@ -4,5 +4,6 @@
 #include "Device.hpp"
 #include "ytRsSolenoidDriver.hpp"
 #include "MD_Base.hpp"
+#include "ReadOdometer.hpp"
 
 #endif
