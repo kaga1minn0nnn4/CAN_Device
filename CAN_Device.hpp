@@ -6,5 +6,6 @@
 #include "MD_Base.hpp"
 #include "ReadOdometer.hpp"
 #include "DevServo.hpp"
+#include "Lsw.hpp"
 
 #endif
