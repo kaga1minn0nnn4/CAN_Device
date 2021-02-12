@@ -6,7 +6,7 @@ namespace CAN_Device_Lib{
         can.begin(CAN_STDID,CAN_1000KBPS,MCP_20MHZ);
         pinMode(RxInt,INPUT);
         can.setMode(MCP_NORMAL);
-        xTaskCreatePinnedToCore(RxHandle,"CAN_Rx_Task",4096,NULL,1,&th[0],0);
+        xTaskCreatePinnedToCore(RxHandle,"CAN_Rx_Task",4096,NULL,1,&th,0);
     }
 
     void CAN_Device::Setup(){

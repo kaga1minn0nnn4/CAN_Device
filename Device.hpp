@@ -10,7 +10,7 @@ namespace CAN_Device_Lib{
     class CAN_Device{
         MCP_CAN can;
         uint8_t RxInt;
-        TaskHandle_t th[2];
+        TaskHandle_t th;
     public:
         CAN_Device(uint8_t ss = 32,uint8_t RxInt = 33):can{ss},RxInt{RxInt}{}
         void Setup(void(*RxHandle)(void* arg));
