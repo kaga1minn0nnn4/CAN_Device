@@ -33,7 +33,7 @@ v3 tim4
 
     union ReadOdometer_data_t{
       uint8_t buf[8];
-      int32_t pos[2];
+      int16_t pos[4];
     };
 
     class ReadOdometer{
@@ -42,16 +42,16 @@ v3 tim4
 
       ReadOdometer_data_t DevData;
 
-      int32_t X;
-      int32_t Y;
+      double X;
+      double Y;
     public:
-      ReadOdometer(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},DevData{},X{0},Y{0}{}
+      ReadOdometer(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},DevData{},X{0.0},Y{0.0}{}
       void RxHandler(std::vector<uint8_t> data);
 
       uint16_t ReadID()const;
 
-      const int32_t& GetX()const;
-      const int32_t& GetY()const;
+      const double& GetX()const;
+      const double& GetY()const;
     };
 
   }

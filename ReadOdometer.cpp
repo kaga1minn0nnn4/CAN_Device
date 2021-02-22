@@ -8,20 +8,20 @@ namespace CAN_Device_Lib{
       if(data.size()<8)return;
 
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
-
-      X = DevData.pos[0];
-      Y = DevData.pos[1];
+      X += ((0.152 / 2.0) * (double)(1 * DevData.pos[0] + 0 * DevData.pos[1] + (-1) * DevData.pos[2] + 0 * DevData.pos[3])) * 0.01;
+      Y += ((0.152 / 2.0) * (double)(0 * DevData.pos[0] + (-1) * DevData.pos[1] + 0 * DevData.pos[2] + 1 * DevData.pos[3])) * 0.01;
+      
     }
 
     uint16_t ReadOdometer::ReadID()const{
       return (1 << 10) |+ DevID;
     }
 
-    const int32_t& ReadOdometer::GetX()const{
+    const double& ReadOdometer::GetX()const{
       return X;
     }
 
-    const int32_t& ReadOdometer::GetY()const{
+    const double& ReadOdometer::GetY()const{
       return Y;
     }
     
