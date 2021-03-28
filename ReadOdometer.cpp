@@ -4,7 +4,7 @@ namespace CAN_Device_Lib{
 
   namespace Device{
 
-    void ReadOdometer::RxHandler(std::vector<uint8_t> data){
+    void ReadOdometer::RxHandler(const std::vector<uint8_t>& data){
       if(data.size()<8)return;
 
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
