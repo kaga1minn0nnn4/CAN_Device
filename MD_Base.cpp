@@ -4,13 +4,38 @@
 namespace CAN_Device_Lib{
   
   namespace Device{
+    double MD_Base::v_convert(double v_raw){
+      //v_raw[m/s]
+      double spin_num = v_raw / wheel_diameter;
+      return spin_num / t_v_sampling;
+    }
 
-    void MD_Base::Move(uint8_t num,MD_Mode_t cmd,int16_t value){
-      uint16_t value_ = abs(value);
+    void MD_Base::trapezoid_move(double& v_,double v_target,int16_t t_ms){
+      double t = t_ms * 0.001;
+      if(v_ < v_target){
+        double v_add = (accel * t);
+        if((v_add + v_) > v_target){
+          v_ = v_target;
+        }else{
+          v_ += v_add;
+        }
+      }else if(v_ > v_target){
+        double v_add = (-accel * t);
+        if((v_add + v_) < v_target){
+          v_ = v_target;
+        }else{
+          v_ += v_add;
+        }
+      }
+    }
+    void MD_Base::Move(uint8_t num,MD_Mode_t cmd,double v_target){
+      trapezoid_move(v[num],v_target,10);
+
+      uint16_t value_ = abs(static_cast<int16_t>(v_convert(v[num])));
       if(value_ > 8191)value_ = 8191;
       
       uint8_t sign;
-      if(value > 0){
+      if(v[num] > 0){
         sign = 0;
       }else{
         sign = 1;
@@ -20,6 +45,7 @@ namespace CAN_Device_Lib{
 
       TxBuf.data[num] = (cmd_ << 14) |+ (sign << 13) |+ value_;
 
+      printLog("%d\n",value_);
     }
 
     void MD_Base::Update(){
