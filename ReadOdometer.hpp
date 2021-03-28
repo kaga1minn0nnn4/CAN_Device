@@ -46,7 +46,7 @@ v3 tim4
       double Y;
     public:
       ReadOdometer(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},DevData{},X{0.0},Y{0.0}{}
-      void RxHandler(std::vector<uint8_t> data);
+      void RxHandler(const std::vector<uint8_t>& data);
 
       uint16_t ReadID()const;
 
