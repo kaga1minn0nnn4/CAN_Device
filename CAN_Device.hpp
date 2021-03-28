@@ -7,5 +7,6 @@
 #include "ReadOdometer.hpp"
 #include "DevServo.hpp"
 #include "Lsw.hpp"
+#include "Ws2812b_driver.hpp"
 
 #endif
