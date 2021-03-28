@@ -2,7 +2,9 @@
 #define MD_BASE_H
 
 #include "Device.hpp"
+#include <cstdio>
 
+#define DEBUG_MD_BASE
 
 namespace CAN_Device_Lib{
   
@@ -21,6 +23,12 @@ namespace CAN_Device_Lib{
     };
   
     class MD_Base{
+      static constexpr double accel = 1.0; //[m/s^2]
+      static constexpr double v_max = 1.0; //[m/s]
+
+      static constexpr double wheel_diameter = 100 * 10e-3;//[sm]
+      static constexpr double t_v_sampling = 4.992 * 10e-3;//[s]
+
       CAN_Device& dev;
       uint16_t DevID;
       MD_Base_Data_t TxBuf;
@@ -28,9 +36,20 @@ namespace CAN_Device_Lib{
 
       uint8_t DistanceFlag[4];
       uint8_t LimitSW[4];
+
+      std::vector<double> v;
+
+      double v_convert(double v_raw);
+      void trapezoid_move(double& v_,double v_target,int16_t t_ms);
+
+      template <typename... T>void printLog(T... args){
+#ifdef DEBUG_MD_BASE
+        std::printf(args...);
+#endif
+      }
     public:
-      MD_Base(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},TxBuf{},status{0}{}
-      void Move(uint8_t num,MD_Mode_t cmd,int16_t value);
+      MD_Base(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},TxBuf{},status{0},v(4,0.0){}
+      void Move(uint8_t num,MD_Mode_t cmd,double v_target);
       void Update();
 
       uint16_t ReadID()const;
