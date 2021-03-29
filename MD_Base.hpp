@@ -26,8 +26,8 @@ namespace CAN_Device_Lib{
       static constexpr double accel = 1.0; //[m/s^2]
       static constexpr double v_max = 1.0; //[m/s]
 
-      static constexpr double wheel_diameter = 100 * 10e-3;//[sm]
-      static constexpr double t_v_sampling = 4.992 * 10e-3;//[s]
+      static constexpr double wheel_diameter = 120 * 10e-3;//[sm]
+      static constexpr double t_v_sampling = 9.984 * 10e-3;//[s]
 
       CAN_Device& dev;
       uint16_t DevID;
@@ -50,6 +50,7 @@ namespace CAN_Device_Lib{
     public:
       MD_Base(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},TxBuf{},status{0},v(4,0.0){}
       void Move(uint8_t num,MD_Mode_t cmd,double v_target);
+      void Move(uint8_t num,MD_Mode_t cmd,int16_t duty);
       void Update();
 
       uint16_t ReadID()const;
