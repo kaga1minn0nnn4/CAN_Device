@@ -14,6 +14,7 @@ namespace CAN_Device_Lib{
       if(data.size()<8)return;
 
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
+      DevData.pos[3] = -DevData.pos[3];
       double v[4] = {
         v_convert(DevData.pos[0]),
         v_convert(DevData.pos[1]),
@@ -38,18 +39,6 @@ namespace CAN_Device_Lib{
 
     uint16_t ReadOdometer::ReadID()const{
       return (1 << 10) |+ DevID;
-    }
-
-    const double& ReadOdometer::GetX()const{
-      return X;
-    }
-
-    const double& ReadOdometer::GetY()const{
-      return Y;
-    }
-    
-    const double& ReadOdometer::GetAngle()const{
-      return Angle;
     }
   }
 

@@ -26,8 +26,8 @@ namespace CAN_Device_Lib{
       static constexpr double accel = 1.0; //[m/s^2]
       static constexpr double v_max = 1.0; //[m/s]
 
-      static constexpr double wheel_diameter = 127 * 10e-3;//[m]
-      static constexpr double t_v_sampling = 9.984 * 10e-3;//[s]
+      static constexpr double wheel_diameter = 127e-3;//[m]
+      static constexpr double t_v_sampling = 9.984e-3;//[s]
       static constexpr double encoder_resolution = 2000;
 
       CAN_Device& dev;

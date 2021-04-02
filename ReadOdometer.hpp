@@ -39,8 +39,8 @@ v3 tim4
 
     class ReadOdometer{
       static constexpr double encoder_resolution = 2048.0;
-      static constexpr double t_sample = 10.0 * 10e-3;//s
-      static constexpr double wheel_diameter = 50.0 * 10e-3;//m
+      static constexpr double t_sample = 10.0e-3;//s
+      static constexpr double wheel_diameter = 50.0e-3;//m
 
       bno055Lib::bno055 imu;
 
@@ -63,9 +63,17 @@ v3 tim4
 
       uint16_t ReadID()const;
 
-      const double& GetX()const;
-      const double& GetY()const;
-      const double& GetAngle()const;
+      const double& GetX()const{
+        return X;
+      }
+
+      const double& GetY()const{
+        return Y;
+      }
+      
+      const double& GetAngle()const{
+        return Angle;
+      }
     };
 
   }
