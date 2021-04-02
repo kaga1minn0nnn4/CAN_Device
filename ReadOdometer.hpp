@@ -40,7 +40,7 @@ v3 tim4
     class ReadOdometer{
       static constexpr double encoder_resolution = 2048.0;
       static constexpr double t_sample = 10.0e-3;//s
-      static constexpr double wheel_diameter = 50.0e-3;//m
+      static constexpr double wheel_diameter = 52.0e-3;//m
 
       bno055Lib::bno055 imu;
 
