@@ -34,7 +34,8 @@ namespace CAN_Device_Lib{
     }
 
     void ReadOdometer::update(){
-      Angle = imu.GetYaw(1);
+      imu.update();
+      Angle = degreeToRadian(imu.GetYaw(1));
     }
 
     uint16_t ReadOdometer::ReadID()const{

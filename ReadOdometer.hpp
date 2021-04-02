@@ -3,7 +3,10 @@
 
 #include "Device.hpp"
 #include "bno055.hpp"
-
+constexpr double degreeToRadian(double deg){
+  //degree -> radian
+  return (deg/180.0)*PI;
+}
 namespace CAN_Device_Lib{
     
   namespace Device{
