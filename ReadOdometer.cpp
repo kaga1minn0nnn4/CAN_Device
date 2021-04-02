@@ -15,11 +15,16 @@ namespace CAN_Device_Lib{
 
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
       DevData.pos[3] = -DevData.pos[3];
+      for(auto& x:DevData.pos){
+        if(abs(x) <= 1){
+          x = 0;
+        }
+      }
       double v[4] = {
-        v_convert(DevData.pos[0]),
-        v_convert(DevData.pos[1]),
-        v_convert(DevData.pos[2]),
-        v_convert(DevData.pos[3])
+        v_convert(DevData.pos[0]) / 2.0,
+        v_convert(DevData.pos[1]) / 2.0,
+        v_convert(DevData.pos[2]) / 2.0,
+        v_convert(DevData.pos[3]) / 2.0
       };
       
       double Vx = v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0));
