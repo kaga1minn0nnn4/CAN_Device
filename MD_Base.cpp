@@ -40,7 +40,7 @@ namespace CAN_Device_Lib{
 
       uint16_t value_ = abs(static_cast<int16_t>(v_convert(v_)));
 
-      if(value_ > 8191)value_ = 8191;
+      if(value_ > 2047)value_ = 2047;
       
       uint8_t sign;
       if(v_ > 0){
@@ -49,9 +49,10 @@ namespace CAN_Device_Lib{
         sign = 1;
       }
 
+      uint8_t check_ = 0b11;
       uint8_t cmd_ = static_cast<uint8_t>(cmd);
 
-      TxBuf.data[num] = (cmd_ << 14) |+ (sign << 13) |+ value_;
+      TxBuf.data[num] = (cmd_ << 14) |+ (sign << 13) |+ (check_ << 11) |+ value_;
 
       printLog("%5d",value_);
     }
@@ -66,7 +67,7 @@ namespace CAN_Device_Lib{
       }
 
       uint16_t value_ = static_cast<uint16_t>(abs(v_));
-      if(value_ > 8191)value_ = 8191;
+      if(value_ > 2047)value_ = 2047;
       
       uint8_t sign;
       if(v_ > 0){
@@ -74,10 +75,10 @@ namespace CAN_Device_Lib{
       }else{
         sign = 1;
       }
-
+      uint8_t check_ = 0b11;
       uint8_t cmd_ = static_cast<uint8_t>(cmd);
 
-      TxBuf.data[num] = (cmd_ << 14) |+ (sign << 13) |+ value_;
+      TxBuf.data[num] = (cmd_ << 14) |+ (sign << 13) |+ (check_ << 11) |+ value_;
 
       printLog("%5d",value_);
     }
