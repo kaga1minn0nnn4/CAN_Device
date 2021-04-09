@@ -21,14 +21,14 @@ namespace CAN_Device_Lib{
         }
       }
       double v[4] = {
-        v_convert(DevData.pos[0]) / 2.0,
-        v_convert(DevData.pos[1]) / 2.0,
-        v_convert(DevData.pos[2]) / 2.0,
-        v_convert(DevData.pos[3]) / 2.0
+        v_convert(DevData.pos[0]),
+        v_convert(DevData.pos[1]),
+        v_convert(DevData.pos[2]),
+        v_convert(DevData.pos[3])
       };
       
-      Vx = v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0));
-      Vy = v[0] * sin(Angle + PI) + v[1] * sin(Angle - (PI / 2.0)) + v[2] * sin(Angle) + v[3] * sin(Angle + (PI / 2.0));
+      Vx = (v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0))) / 2.0;
+      Vy = (v[0] * sin(Angle + PI) + v[1] * sin(Angle - (PI / 2.0)) + v[2] * sin(Angle) + v[3] * sin(Angle + (PI / 2.0))) / 2.0;
 
       X += Vx * t_sample;
       Y += Vy * t_sample;
