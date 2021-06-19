@@ -21,6 +21,7 @@ namespace CAN_Device_Lib{
     }
 
     void CAN_Device::Write(uint16_t id,uint8_t* TxBuf,uint8_t len){
+        
         can.sendMsgBuf(id,0,len,TxBuf);
     }
 
