@@ -14,7 +14,7 @@ namespace CAN_Device_Lib{
       DutyMode = 0,
       SpeedMode,
       DistanceMode,
-      ResetMode
+      AngleMode
     };
 
     union MD_Base_Data_t{
