@@ -13,6 +13,9 @@ namespace CAN_Device_Lib{
     int16_t ReadOdometer::encoder_filter(int16_t raw,int16_t lpf_last){
       int16_t lpf;
       lpf = static_cast<int16_t>((1.0 - kLPF) * static_cast<double>(lpf_last) + kLPF * static_cast<double>(raw));
+      if(abs(lpf) <= 1){
+        lpf = 0;
+      }
       return lpf;
     }
 
