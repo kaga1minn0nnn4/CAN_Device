@@ -24,8 +24,6 @@ namespace CAN_Device_Lib{
 
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
 
-      double k = 0.1;
-
       int16_t pos_lpf[4];
       for(int i = 0;i < 4;i++){
         pos_lpf[i] = encoder_filter(DevData.pos[i],pos_last[i]);
@@ -34,10 +32,10 @@ namespace CAN_Device_Lib{
       }
 
       double v[4] = {
-        v_convert(pos_lpf[0]),
-        v_convert(pos_lpf[1]),
-        v_convert(pos_lpf[2]),
-        v_convert(pos_lpf[3])
+        -v_convert(pos_lpf[0]),
+        -v_convert(pos_lpf[1]),
+        -v_convert(pos_lpf[2]),
+        -v_convert(pos_lpf[3])
       };
       
       Vx = (v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0))) / 2.0;
