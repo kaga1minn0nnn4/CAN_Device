@@ -47,7 +47,7 @@ v3 tim4
       static constexpr double encoder_resolution = 2048.0;
       static constexpr double t_sample = 10.0e-3;//s
       static constexpr double wheel_diameter = 52.0e-3;//m
-      static constexpr double kLPF = 0.15;
+      static constexpr double kLPF = 0.10;
 
       bno055Lib::bno055 imu;
 
@@ -101,6 +101,13 @@ v3 tim4
       
       const double& GetAngle()const{
         return Angle;
+      }
+
+      void Reset(){
+        X = 0.0;
+        Y = 0.0;
+        Vx = 0.0;
+        Vy = 0.0;
       }
     };
 
