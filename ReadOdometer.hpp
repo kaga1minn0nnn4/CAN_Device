@@ -104,6 +104,9 @@ v3 tim4
       }
 
       void Reset(){
+        for(auto& enc:pos_last){
+          enc = 0;
+        }
         X = 0.0;
         Y = 0.0;
         Vx = 0.0;

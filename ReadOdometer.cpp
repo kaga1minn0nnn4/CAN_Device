@@ -22,6 +22,8 @@ namespace CAN_Device_Lib{
     void ReadOdometer::RxHandler(const std::vector<uint8_t>& data){
       if(data.size()<8)return;
 
+      update();
+      
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
 
       int16_t pos_lpf[4];
