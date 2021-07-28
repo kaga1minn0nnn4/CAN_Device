@@ -4,7 +4,7 @@
 #include "Device.hpp"
 #include "bno055.hpp"
 
-#define DEBUG_READ_ODOMETER
+//#define DEBUG_READ_ODOMETER
 
 constexpr double degreeToRadian(double deg){
   //degree -> radian
@@ -47,7 +47,7 @@ v3 tim4
       static constexpr double encoder_resolution = 2048.0;
       static constexpr double t_sample = 10.0e-3;//s
       static constexpr double wheel_diameter = 52.0e-3;//m
-      static constexpr double kLPF = 0.10;
+      static constexpr double kLPF = 1.0;
 
       bno055Lib::bno055 imu;
 

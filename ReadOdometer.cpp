@@ -21,8 +21,6 @@ namespace CAN_Device_Lib{
 
     void ReadOdometer::RxHandler(const std::vector<uint8_t>& data){
       if(data.size()<8)return;
-
-      update();
       
       for(int i=0;i<8;i++)DevData.buf[i] = data[i];
 
@@ -40,8 +38,8 @@ namespace CAN_Device_Lib{
         -v_convert(pos_lpf[3])
       };
       
-      Vx = (v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0))) / 4.0;
-      Vy = (v[0] * sin(Angle + PI) + v[1] * sin(Angle - (PI / 2.0)) + v[2] * sin(Angle) + v[3] * sin(Angle + (PI / 2.0))) / 4.0;
+      Vx = (v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0))) / 8.0;
+      Vy = (v[0] * sin(Angle + PI) + v[1] * sin(Angle - (PI / 2.0)) + v[2] * sin(Angle) + v[3] * sin(Angle + (PI / 2.0))) / 8.0;
 
       X += Vx;
       Y += Vy;
