@@ -23,25 +23,25 @@ namespace CAN_Device_Lib{
     };
   
     class MD_Base{
-      static constexpr double accel = 1.0; //[m/s^2]
-      static constexpr double v_max = 1.0; //[m/s]
+      static constexpr double kAccel = 1.0; //[m/s^2]
+      static constexpr double kVmax = 1.0; //[m/s]
 
-      static constexpr double wheel_diameter = 127e-3;//[m]
-      static constexpr double t_v_sampling = 9.984e-3;//[s]
-      static constexpr double encoder_resolution = 2000;
+      static constexpr double kWheelDiameter = 127e-3;//[m]
+      static constexpr double kTVSampling = 9.984e-3;//[s]
+      static constexpr double kEncoderResolution = 2000;
 
-      CAN_Device& dev;
-      uint16_t DevID;
-      MD_Base_Data_t TxBuf;
-      uint8_t status;
+      CAN_Device& dev_;
+      uint16_t dev_id_;
+      MD_Base_Data_t tx_buf_;
+      uint8_t status_;
 
-      uint8_t DistanceFlag[4];
-      uint8_t LimitSW[4];
+      uint8_t distance_flag_[4];
+      uint8_t limit_sw_[4];
 
-      std::vector<double> v;
+      std::vector<double> v_;
 
-      double v_convert(double v_raw);
-      void trapezoid_move(double& v_,double v_target,int16_t t_ms);
+      double VConvert(double v_raw);
+      void TrapezoidMove(double& v_,double v_target,int16_t t_ms);
 
       template <typename... T>void printLog(T... args){
 #ifdef DEBUG_MD_BASE
@@ -49,7 +49,7 @@ namespace CAN_Device_Lib{
 #endif
       }
     public:
-      MD_Base(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},TxBuf{},status{0},v(4,0.0){}
+      MD_Base(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},tx_buf_{},status_{0},v_(4,0.0){}
       void Move(uint8_t num,MD_Mode_t cmd,double v_target,boolean trapezoid_f = true);
       void Move(uint8_t num,MD_Mode_t cmd,int16_t duty,boolean trapezoid_f = true);
       void Update();
