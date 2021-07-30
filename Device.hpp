@@ -8,15 +8,15 @@
 namespace CAN_Device_Lib{
 
     class CAN_Device{
-        MCP_CAN can;
-        uint8_t RxInt;
-        TaskHandle_t th;
+        MCP_CAN can_;
+        uint8_t rx_int_;
+        TaskHandle_t th_;
     public:
-        CAN_Device(uint8_t ss = 32,uint8_t RxInt = 33):can{ss},RxInt{RxInt}{}
-        void Setup(void(*RxHandle)(void* arg));
+        CAN_Device(uint8_t ss = 32,uint8_t rx_int = 33):can_{ss},rx_int_{rx_int}{}
+        void Setup(void(*rx_handler)(void* arg));
         void Setup();
-        void Write(uint16_t id,std::vector<uint8_t> TxBuf);
-        void Write(uint16_t id,uint8_t* TxBuf,uint8_t len);
+        void Write(uint16_t id,std::vector<uint8_t> tx_buf);
+        void Write(uint16_t id,uint8_t* tx_buf,uint8_t len);
         
         void Read(long unsigned int* id,std::vector<uint8_t>& buf);
     };

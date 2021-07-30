@@ -49,7 +49,7 @@ v3 tim4
       static constexpr double wheel_diameter = 52.0e-3;//m
       static constexpr double kLPF = 1.0;
 
-      bno055Lib::bno055 imu;
+      Bno055Lib::Bno055 imu;
 
       CAN_Device& dev;
       uint16_t DevID;

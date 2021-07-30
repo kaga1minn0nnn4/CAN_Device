@@ -49,11 +49,11 @@ namespace CAN_Device_Lib{
     }
 
     void ReadOdometer::setup(){
-      imu.setup();
+      imu.Setup();
     }
 
     void ReadOdometer::update(){
-      imu.update();
+      imu.Update();
       Angle = degreeToRadian(imu.GetYaw(1));
     }
 
