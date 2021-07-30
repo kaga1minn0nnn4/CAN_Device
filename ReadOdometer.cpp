@@ -4,61 +4,47 @@ namespace CAN_Device_Lib{
 
   namespace Device{
 
-    double ReadOdometer::v_convert(int16_t pulse){
-      double spin_num = static_cast<double>(pulse) / encoder_resolution;
-      double distance = spin_num * (wheel_diameter * PI);
-      return distance / t_sample;
-    }
-
-    int16_t ReadOdometer::encoder_filter(int16_t raw,int16_t lpf_last){
-      int16_t lpf;
-      lpf = static_cast<int16_t>((1.0 - kLPF) * static_cast<double>(lpf_last) + kLPF * static_cast<double>(raw));
-      if(abs(lpf) <= 1){
-        lpf = 0;
-      }
-      return lpf;
+    double ReadOdometer::VConvert(int16_t pulse){
+      double spin_num = static_cast<double>(pulse) / kEncoderResolution;
+      double distance = spin_num * (kWheelDiameter * PI);
+      return distance / kTSample;
     }
 
     void ReadOdometer::RxHandler(const std::vector<uint8_t>& data){
       if(data.size()<8)return;
       
-      for(int i=0;i<8;i++)DevData.buf[i] = data[i];
+      for(int i=0;i<8;i++)dev_data_.buf[i] = data[i];
 
       int16_t pos_lpf[4];
-      for(int i = 0;i < 4;i++){
-        pos_lpf[i] = encoder_filter(DevData.pos[i],pos_last[i]);
-        pos_last[i] = pos_lpf[i];
-        printLog("%5d",pos_lpf[i]);
-      }
 
       double v[4] = {
-        -v_convert(pos_lpf[0]),
-        -v_convert(pos_lpf[1]),
-        -v_convert(pos_lpf[2]),
-        -v_convert(pos_lpf[3])
+        -VConvert(pos_lpf[0]),
+        -VConvert(pos_lpf[1]),
+        -VConvert(pos_lpf[2]),
+        -VConvert(pos_lpf[3])
       };
       
-      Vx = (v[0] * cos(Angle + PI) + v[1] * cos(Angle - (PI / 2.0)) + v[2] * cos(Angle) + v[3] * cos(Angle + (PI / 2.0))) / 8.0;
-      Vy = (v[0] * sin(Angle + PI) + v[1] * sin(Angle - (PI / 2.0)) + v[2] * sin(Angle) + v[3] * sin(Angle + (PI / 2.0))) / 8.0;
+      vx_ = (v[0] * cos(angle_ + PI) + v[1] * cos(angle_ - (PI / 2.0)) + v[2] * cos(angle_) + v[3] * cos(angle_ + (PI / 2.0))) / 8.0;
+      vy_ = (v[0] * sin(angle_ + PI) + v[1] * sin(angle_ - (PI / 2.0)) + v[2] * sin(angle_) + v[3] * sin(angle_ + (PI / 2.0))) / 8.0;
 
-      X += Vx;
-      Y += Vy;
+      x_ += vx_;
+      y_ += vy_;
 
-      printLog(" Vx : %6.3f Vy : %6.3f X : %6.3f Y : %6.3f Yaw : %6.3f",Vx,Vy,X,Y,Angle);
+      printLog(" Vx : %6.3f Vy : %6.3f X : %6.3f Y : %6.3f Yaw : %6.3f",vx_,vy_,x_,y_,angle_);
       printLog("\n");
     }
 
-    void ReadOdometer::setup(){
-      imu.Setup();
+    void ReadOdometer::Setup(){
+      imu_.Setup();
     }
 
-    void ReadOdometer::update(){
-      imu.Update();
-      Angle = degreeToRadian(imu.GetYaw(1));
+    void ReadOdometer::Update(){
+      imu_.Update();
+      angle_ = degree_to_radian(imu_.GetYaw(1));
     }
 
     uint16_t ReadOdometer::ReadID()const{
-      return (1 << 10) |+ DevID;
+      return (1 << 10) |+ dev_id_;
     }
   }
 

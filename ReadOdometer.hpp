@@ -6,7 +6,7 @@
 
 //#define DEBUG_READ_ODOMETER
 
-constexpr double degreeToRadian(double deg){
+constexpr double degree_to_radian(double deg){
   //degree -> radian
   return (deg/180.0)*PI;
 }
@@ -44,30 +44,25 @@ v3 tim4
     };
 
     class ReadOdometer{
-      static constexpr double encoder_resolution = 2048.0;
-      static constexpr double t_sample = 10.0e-3;//s
-      static constexpr double wheel_diameter = 52.0e-3;//m
-      static constexpr double kLPF = 1.0;
+      static constexpr double kEncoderResolution = 2048.0;
+      static constexpr double kTSample = 10.0e-3;//s
+      static constexpr double kWheelDiameter = 52.0e-3;//m
+    
+      Bno055Lib::Bno055 imu_;
 
-      Bno055Lib::Bno055 imu;
+      CAN_Device& dev_;
+      uint16_t dev_id_;
 
-      CAN_Device& dev;
-      uint16_t DevID;
+      ReadOdometer_data_t dev_data_;
 
-      ReadOdometer_data_t DevData;
+      double vx_;
+      double vy_;
 
-      int16_t pos_last[4];
+      double x_;
+      double y_;
+      double angle_;
 
-      double Vx;
-      double Vy;
-
-      double X;
-      double Y;
-      double Angle;
-
-      double v_convert(int16_t pulse);
-
-      int16_t encoder_filter(int16_t raw,int16_t lpf_last);
+      double VConvert(int16_t pulse);
 
       template <typename... T>inline __attribute__((always_inline)) void printLog(T... args){
         #ifdef DEBUG_READ_ODOMETER
@@ -75,42 +70,39 @@ v3 tim4
         #endif
       }
     public:
-      ReadOdometer(CAN_Device& dev,uint16_t id):dev{dev},DevID{id},DevData{},pos_last{},Vx{0.0},Vy{0.0},X{0.0},Y{0.0},Angle{0.0}{}
+      ReadOdometer(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},dev_data_{},vx_{0.0},vy_{0.0},x_{0.0},y_{0.0},angle_{0.0}{}
       void RxHandler(const std::vector<uint8_t>& data);
 
-      void setup();
-      void update();
+      void Setup();
+      void Update();
 
       uint16_t ReadID()const;
 
       const double& GetVx()const{
-        return Vx;
+        return vx_;
       }
 
       const double& GetVy()const{
-        return Vy;
+        return vy_;
       }
 
       const double& GetX()const{
-        return X;
+        return x_;
       }
 
       const double& GetY()const{
-        return Y;
+        return y_;
       }
       
       const double& GetAngle()const{
-        return Angle;
+        return angle_;
       }
 
       void Reset(){
-        for(auto& enc:pos_last){
-          enc = 0;
-        }
-        X = 0.0;
-        Y = 0.0;
-        Vx = 0.0;
-        Vy = 0.0;
+        x_ = 0.0;
+        y_ = 0.0;
+        vx_ = 0.0;
+        vy_ = 0.0;
       }
     };
 
