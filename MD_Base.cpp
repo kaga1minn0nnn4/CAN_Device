@@ -84,7 +84,7 @@ namespace CAN_Device_Lib{
     }
 
     void MD_Base::MoveRpm(uint8_t num,int32_t rpm){
-      double rpm_target = (static_cast<double>(rpm) / 60.0) * kTVSampling;
+      double rpm_target = abs((static_cast<double>(rpm) / 60.0) * kTVSampling);
 
       uint16_t value = static_cast<uint16_t>(rpm_target * kEncoderResolution);
       
