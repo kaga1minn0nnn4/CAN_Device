@@ -83,6 +83,27 @@ namespace CAN_Device_Lib{
       printLog("%5d",value);
     }
 
+    void MD_Base::MoveRpm(uint8_t num,int32_t rpm){
+      double rpm_target = (static_cast<double>(rpm) / 60.0) * kTVSampling;
+
+      uint16_t value = static_cast<uint16_t>(rpm_target * kEncoderResolution);
+      
+      uint8_t sign;
+      if(rpm > 0){
+        sign = 0;
+      }else{
+        sign = 1;
+      }
+      
+      uint8_t cmd = static_cast<uint8_t>(MD_Mode_t::SpeedMode);
+      uint8_t check = 0b11;
+      uint8_t cmd_cast = static_cast<uint8_t>(cmd);
+
+      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value;
+
+      printLog("%5d",value);
+    }
+
     void MD_Base::Update(){
       dev_.Write(dev_id_,tx_buf_.buf,8);
 

@@ -52,6 +52,7 @@ namespace CAN_Device_Lib{
       MD_Base(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},tx_buf_{},status_{0},v_(4,0.0){}
       void Move(uint8_t num,MD_Mode_t cmd,double v_target,boolean trapezoid_f = true);
       void Move(uint8_t num,MD_Mode_t cmd,int16_t duty,boolean trapezoid_f = true);
+      void MoveRpm(uint8_t num,int32_t rpm);
       void Update();
 
       uint16_t ReadID()const;
