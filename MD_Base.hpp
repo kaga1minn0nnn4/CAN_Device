@@ -28,7 +28,7 @@ namespace CAN_Device_Lib{
 
       static constexpr double kWheelDiameter = 127e-3;//[m]
       static constexpr double kTVSampling = 9.984e-3;//[s]
-      static constexpr double kEncoderResolution = 12.0;
+      static constexpr double kEncoderResolution = 2000.0;
 
       CAN_Device& dev_;
       uint16_t dev_id_;
