@@ -83,10 +83,18 @@ namespace CAN_Device_Lib{
       printLog("%5d",value);
     }
 
-    void MD_Base::MoveRpm(uint8_t num,int32_t rpm){
+    void MD_Base::MoveRpm(uint8_t num,int32_t rpm,boolean trapezoid_f){
       double rpm_target = abs((static_cast<double>(rpm) / 60.0) * kTVSampling);
 
       uint16_t value = static_cast<uint16_t>(rpm_target * kEncoderResolution);
+
+      uint16_t value_fil = 0;
+      if(trapezoid_f){
+        TrapezoidMove(v_[num],static_cast<double>(value),10);
+        value_fil = static_cast<uint16_t>(v_[num]);
+      }else{
+        value_fil = static_cast<double>(value);
+      }
       
       uint8_t sign;
       if(rpm > 0){
@@ -99,9 +107,9 @@ namespace CAN_Device_Lib{
       uint8_t check = 0b11;
       uint8_t cmd_cast = static_cast<uint8_t>(cmd);
 
-      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value;
+      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value_fil;
 
-      printLog("%5d",value);
+      printLog("%5d",value_fil);
     }
 
     void MD_Base::Update(){
