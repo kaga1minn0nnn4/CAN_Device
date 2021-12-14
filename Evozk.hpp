@@ -14,6 +14,10 @@ namespace CAN_Device_Lib{
       Evozk(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id}{}
       uint16_t ReadID()const;
       void MoveDuty(int16_t duty);
+
+      uint16_t GetPwmResolution()const{
+          return kPwmResolution;
+      }
     };
   }
 }
