@@ -7,6 +7,13 @@
 
 namespace CAN_Device_Lib{
 
+    namespace Device{
+        typedef union{
+            int16_t data;
+            uint8_t buf[2];
+        }byte2_convert_t;
+    }
+
     class CAN_Device{
         MCP_CAN can_;
         uint8_t rx_int_;

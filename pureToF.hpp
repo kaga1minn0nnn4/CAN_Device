@@ -7,12 +7,6 @@ namespace CAN_Device_Lib{
   
   namespace Device{
 
-    typedef union{
-        int16_t data;
-        uint8_t buf[2];
-    }byte2_convert_t;
-
-
     class PureToF{
         CAN_Device& dev_;
         uint16_t dev_id_;
