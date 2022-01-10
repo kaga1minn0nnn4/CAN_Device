@@ -1,3 +1,5 @@
+/*
+
 #ifndef ODO_H
 #define ODO_H
 
@@ -13,7 +15,7 @@ constexpr double degree_to_radian(double deg){
 namespace CAN_Device_Lib{
     
   namespace Device{
-
+*/
     /*           Y
                  ^
                  |
@@ -37,7 +39,7 @@ v3 tim4
                --->
                 v3
     */
-
+/*
     union ReadOdometer_data_t{
       uint8_t buf[8];
       int16_t pos[4];
@@ -111,3 +113,4 @@ v3 tim4
 }
 
 #endif
+*/
