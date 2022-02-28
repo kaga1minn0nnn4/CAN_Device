@@ -12,7 +12,7 @@ namespace CAN_Device_Lib{
 
         dev_.Write(dev_id_,tx.buf,5);
 
-        delay(20);
+        delay(kSetupDelay);
       }
     }
 
@@ -20,11 +20,7 @@ namespace CAN_Device_Lib{
       md_send_t tx{};
       tx.data.req = static_cast<uint8_t>(md_mode_t::Duty);
       tx.data.value = duty;
-
-      for(int i = 0;i < 5;i++){
-        printf("%4d",tx.buf[i]);
-      }
-      printf("\n");
+      printLog("%d\n",tx.data.value);
 
       dev_.Write(dev_id_,tx.buf,5);
     }
@@ -32,9 +28,35 @@ namespace CAN_Device_Lib{
     void Evozk::MoveRpm(int16_t rpm){
       md_send_t tx{};
       tx.data.req = static_cast<uint8_t>(md_mode_t::Speed);  
-      tx.data.value = static_cast<double>(rpm) / 60.0 * kEncoderSamplingT;
+      tx.data.value = static_cast<int16_t>(static_cast<double>(rpm * enc_resolution) / 60.0 * kEncoderSamplingT);
+      printLog("%d\n",tx.data.value);
 
       dev_.Write(dev_id_,tx.buf,5);
+    }
+
+    void Evozk::MoveAngle(int16_t angle){
+      md_send_t tx{};
+      tx.data.req = static_cast<uint8_t>(md_mode_t::Angle);
+      tx.data.value = static_cast<int16_t>(static_cast<double>(angle * enc_resolution) / 360.0);
+
+      printLog("%d\n",tx.data.value);
+      dev_.Write(dev_id_,tx.buf,5);
+    }
+
+    void Evozk::ResetEncoder(){
+      md_send_t tx{};
+      tx.data.req = static_cast<uint8_t>(md_mode_t::ResetEncoder);
+      tx.data.value = 193;
+      dev_.Write(dev_id_,tx.buf,5);
+      delay(kSetupDelay);
+    }
+
+    void Evozk::SetDirection(uint8_t dir){
+      md_send_t tx{};
+      tx.data.req = static_cast<uint8_t>(md_mode_t::SetDir);
+      tx.data.value = dir;
+      dev_.Write(dev_id_,tx.buf,5);
+      delay(kSetupDelay);
     }
 
     uint16_t MD_Base::ReadID()const{

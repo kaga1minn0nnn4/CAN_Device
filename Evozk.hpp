@@ -3,6 +3,8 @@
 
 #include "CAN_Device.hpp"
 
+#define DEBUG_EVOZK
+
 typedef union{
     uint8_t buf[5];
     struct{
@@ -22,7 +24,7 @@ enum class md_mode_t{
     SetGainKp,
     SetGainKi,
     SetGainKd,
-    ReverseDir,
+    SetDir,
     ResetEncoder
 };
 
@@ -31,11 +33,18 @@ namespace CAN_Device_Lib{
     class Evozk{
       static constexpr uint16_t kPwmResolution = 0x1ff;
       static constexpr double kEncoderSamplingT = 10.0e-3;//10ms
+      static constexpr uint16_t kSetupDelay = 100;
 
       uint16_t enc_resolution = 2048;
 
       CAN_Device& dev_;
       uint16_t dev_id_;
+      
+      template <typename... T>void printLog(T... args){
+#ifdef DEBUG_EVOZK
+        std::printf(args...);
+#endif
+      }
     public:
       Evozk(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id}{}
       uint16_t ReadID()const;
@@ -49,6 +58,10 @@ namespace CAN_Device_Lib{
       void MoveDuty(int16_t duty);
       void MoveRpm(int16_t rpm);
       void MoveAngle(int16_t angle);
+
+      void ResetEncoder();
+
+      void SetDirection(uint8_t dir);
 
       uint16_t GetPwmResolution()const{
           return kPwmResolution;
