@@ -34,6 +34,7 @@ namespace CAN_Device_Lib{
       static constexpr uint16_t kPwmResolution = 0x1ff;
       static constexpr double kEncoderSamplingT = 10.0e-3;//10ms
       static constexpr uint16_t kSetupDelay = 100;
+      static constexpr uint16_t kLoopDelay = 1;
 
       uint16_t enc_resolution = 2048;
 

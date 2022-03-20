@@ -22,6 +22,7 @@ namespace CAN_Device_Lib{
       tx.data.value = duty;
       printLog("%d\n",tx.data.value);
 
+      delay(kLoopDelay);
       dev_.Write(dev_id_,tx.buf,5);
     }
 
