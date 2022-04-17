@@ -4,7 +4,7 @@
 #include "Device.hpp"
 #include <cstdio>
 
-//#define DEBUG_MD_BASE
+#define DEBUG_MD_BASE
 
 namespace CAN_Device_Lib{
   

@@ -80,7 +80,7 @@ namespace CAN_Device_Lib{
     void MD_Base::ReverseDir(uint8_t num,uint8_t dir){
       uint8_t cmd = static_cast<uint8_t>(MD_Mode_t::ReverseMode);
       tx_buf_.data[num] = cmd << 13 |+ dir;
-      delay(50);
+      delay(100);
     }
 
     void MD_Base::Update(){
