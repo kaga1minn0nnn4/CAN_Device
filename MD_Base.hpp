@@ -4,7 +4,7 @@
 #include "Device.hpp"
 #include <cstdio>
 
-#define DEBUG_MD_BASE
+//#define DEBUG_MD_BASE
 
 namespace CAN_Device_Lib{
   
@@ -14,7 +14,9 @@ namespace CAN_Device_Lib{
       DutyMode = 0,
       SpeedMode,
       DistanceMode,
-      AngleMode
+      AngleMode,
+      ResetMode,
+      ReverseMode
     };
 
     union MD_Base_Data_t{
@@ -28,7 +30,6 @@ namespace CAN_Device_Lib{
 
       static constexpr double kWheelDiameter = 127e-3;//[m]
       static constexpr double kTVSampling = 9.984e-3;//[s]
-      static constexpr double kEncoderResolution = 2000.0;
 
       CAN_Device& dev_;
       uint16_t dev_id_;
@@ -38,9 +39,10 @@ namespace CAN_Device_Lib{
       uint8_t distance_flag_[4];
       uint8_t limit_sw_[4];
 
+      uint16_t encoder_resolution_;
+
       std::vector<double> v_;
 
-      double VConvert(double v_raw);
       void TrapezoidMove(double& v_,double v_target,int16_t t_ms);
 
       template <typename... T>void printLog(T... args){
@@ -50,9 +52,14 @@ namespace CAN_Device_Lib{
       }
     public:
       MD_Base(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},tx_buf_{},status_{0},v_(4,0.0){}
-      void Move(uint8_t num,MD_Mode_t cmd,double v_target,boolean trapezoid_f = true);
-      void Move(uint8_t num,MD_Mode_t cmd,int16_t duty,boolean trapezoid_f = true);
-      void MoveRpm(uint8_t num,int32_t rpm,boolean trapezoid_f = true);
+
+      void SetEncoderResolution(uint16_t enc){encoder_resolution_ = enc;}
+
+      void MoveDuty(uint8_t num,int16_t duty,boolean trapezoid_f = false);
+      void MoveRpm(uint8_t num,int32_t rpm,boolean trapezoid_f = false);
+
+      void ReverseDir(uint8_t num,uint8_t dir);
+      
       void Update();
 
       uint16_t ReadID()const;

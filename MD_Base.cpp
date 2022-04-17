@@ -4,12 +4,6 @@
 namespace CAN_Device_Lib{
   
   namespace Device{
-    double MD_Base::VConvert(double v_raw){
-      //v_raw[m/s]
-      double spin_num = v_raw / (kWheelDiameter * PI);
-      double pulse = spin_num * kEncoderResolution;
-      return pulse * kTVSampling;
-    }
 
     void MD_Base::TrapezoidMove(double& v_,double v_target,int16_t t_ms){
       double t = t_ms * 0.001;
@@ -29,35 +23,8 @@ namespace CAN_Device_Lib{
         }
       }
     }
-    void MD_Base::Move(uint8_t num,MD_Mode_t cmd,double v_target,boolean trapezoid_f){
-      double v = 0.0;
-      if(trapezoid_f){
-        TrapezoidMove(v_[num],v_target,10);
-        v = v_[num];
-      }else{
-        v = v_target;
-      }
 
-      uint16_t value = abs(static_cast<int16_t>(VConvert(v)));
-
-      if(value > 2047)value = 2047;
-      
-      uint8_t sign;
-      if(v > 0){
-        sign = 0;
-      }else{
-        sign = 1;
-      }
-
-      uint8_t check = 0b11;
-      uint8_t cmd_cast = static_cast<uint8_t>(cmd);
-
-      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value;
-
-      printLog("%5d",value);
-    }
-
-    void MD_Base::Move(uint8_t num,MD_Mode_t cmd,int16_t duty,boolean trapezoid_f){
+    void MD_Base::MoveDuty(uint8_t num,int16_t duty,boolean trapezoid_f){
       double v = 0.0;
       if(trapezoid_f){
         TrapezoidMove(v_[num],static_cast<double>(duty),10);
@@ -75,10 +42,10 @@ namespace CAN_Device_Lib{
       }else{
         sign = 1;
       }
-      uint8_t check = 0b11;
-      uint8_t cmd_cast = static_cast<uint8_t>(cmd);
 
-      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value;
+      uint8_t cmd_cast = static_cast<uint8_t>(MD_Mode_t::DutyMode);
+
+      tx_buf_.data[num] = (cmd_cast << 13) |+ (sign << 12) |+ value;
 
       printLog("%5d",value);
     }
@@ -86,7 +53,7 @@ namespace CAN_Device_Lib{
     void MD_Base::MoveRpm(uint8_t num,int32_t rpm,boolean trapezoid_f){
       double rpm_target = abs((static_cast<double>(rpm) / 60.0) * kTVSampling);
 
-      uint16_t value = static_cast<uint16_t>(rpm_target * kEncoderResolution);
+      uint16_t value = static_cast<uint16_t>(rpm_target * encoder_resolution_);
 
       uint16_t value_fil = 0;
       if(trapezoid_f){
@@ -102,14 +69,18 @@ namespace CAN_Device_Lib{
       }else{
         sign = 1;
       }
-      
-      uint8_t cmd = static_cast<uint8_t>(MD_Mode_t::SpeedMode);
-      uint8_t check = 0b11;
-      uint8_t cmd_cast = static_cast<uint8_t>(cmd);
+    
+      uint8_t cmd_cast = static_cast<uint8_t>(MD_Mode_t::SpeedMode);
 
-      tx_buf_.data[num] = (cmd_cast << 14) |+ (sign << 13) |+ (check << 11) |+ value_fil;
+      tx_buf_.data[num] = (cmd_cast << 13) |+ (sign << 12) |+ value_fil;
 
       printLog("%5d",value_fil);
+    }
+
+    void MD_Base::ReverseDir(uint8_t num,uint8_t dir){
+      uint8_t cmd = static_cast<uint8_t>(MD_Mode_t::ReverseMode);
+      tx_buf_.data[num] = cmd << 13 |+ dir;
+      delay(50);
     }
 
     void MD_Base::Update(){
