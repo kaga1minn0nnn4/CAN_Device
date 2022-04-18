@@ -14,9 +14,7 @@ namespace CAN_Device_Lib{
       DutyMode = 0,
       SpeedMode,
       DistanceMode,
-      AngleMode,
-      ResetMode,
-      ReverseMode
+      ResetMode
     };
 
     union MD_Base_Data_t{
@@ -55,10 +53,8 @@ namespace CAN_Device_Lib{
 
       void SetEncoderResolution(uint16_t enc){encoder_resolution_ = enc;}
 
-      void MoveDuty(uint8_t num,int16_t duty,boolean trapezoid_f = false);
-      void MoveRpm(uint8_t num,int32_t rpm,boolean trapezoid_f = false);
-
-      void ReverseDir(uint8_t num,uint8_t dir);
+      void MoveDuty(uint8_t num,int16_t duty,uint8_t dir,boolean trapezoid_f = false);
+      void MoveRpm(uint8_t num,int32_t rpm,uint8_t dir,boolean trapezoid_f = false);
       
       void Update();
 
