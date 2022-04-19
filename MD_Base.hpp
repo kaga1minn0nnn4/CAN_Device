@@ -23,25 +23,13 @@ namespace CAN_Device_Lib{
     };
   
     class MD_Base{
-      static constexpr double kAccel = 1.0; //[m/s^2]
-      static constexpr double kVmax = 1.0; //[m/s]
-
-      static constexpr double kWheelDiameter = 127e-3;//[m]
       static constexpr double kTVSampling = 9.984e-3;//[s]
 
       CAN_Device& dev_;
       uint16_t dev_id_;
       MD_Base_Data_t tx_buf_;
-      uint8_t status_;
-
-      uint8_t distance_flag_[4];
-      uint8_t limit_sw_[4];
 
       uint16_t encoder_resolution_;
-
-      std::vector<double> v_;
-
-      void TrapezoidMove(double& v_,double v_target,int16_t t_ms);
 
       template <typename... T>void printLog(T... args){
 #ifdef DEBUG_MD_BASE
@@ -49,20 +37,17 @@ namespace CAN_Device_Lib{
 #endif
       }
     public:
-      MD_Base(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},tx_buf_{},status_{0},v_(4,0.0){}
+      MD_Base(CAN_Device& dev,uint16_t id):dev_{dev},dev_id_{id},tx_buf_{}{}
 
       void SetEncoderResolution(uint16_t enc){encoder_resolution_ = enc;}
 
-      void MoveDuty(uint8_t num,int16_t duty,uint8_t dir,boolean trapezoid_f = false);
-      void MoveRpm(uint8_t num,int32_t rpm,uint8_t dir,boolean trapezoid_f = false);
+      void MoveDuty(uint8_t num,int16_t duty,uint8_t dir);
+      void MoveRpm(uint8_t num,int32_t rpm,uint8_t dir);
+      void MoveDistance(uint8_t num,int32_t distance,uint8_t dir);
       
       void Update();
 
       uint16_t ReadID()const;
-      void RxHandler(uint8_t data);
-
-      const uint8_t& ReadLimitSW(uint8_t num)const;
-      const uint8_t& ReadDistanceFlag(uint8_t num)const;
     };
 
   }
