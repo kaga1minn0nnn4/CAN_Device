@@ -44,6 +44,8 @@ namespace CAN_Device_Lib{
       void MoveDuty(uint8_t num,int16_t duty,uint8_t dir);
       void MoveRpm(uint8_t num,int32_t rpm,uint8_t dir);
       void MoveDistance(uint8_t num,int32_t distance,uint8_t dir);
+
+      void ResetData(uint8_t num);
       
       void Update();
 

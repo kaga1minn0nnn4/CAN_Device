@@ -59,8 +59,14 @@ namespace CAN_Device_Lib{
       printLog("%5d",value);
     }
 
+    void MD_Base::ResetData(uint8_t num){
+      uint8_t cmd_cast = static_cast<uint8_t>(MD_Mode_t::ResetMode);
+      tx_buf_.data[num] = cmd_cast << 14;
+    }
+
     void MD_Base::Update(){
       dev_.Write(dev_id_,tx_buf_.buf,8);
+      printLog("\n");
     }
 
     uint16_t MD_Base::ReadID()const{
