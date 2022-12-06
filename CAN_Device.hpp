@@ -8,5 +8,6 @@
 #include "Ws2812b_driver.hpp"
 #include "Evozk.hpp"
 #include "ytRsSolenoidDriver.hpp"
+#include "MDv6Cluster.hpp"
 
 #endif
